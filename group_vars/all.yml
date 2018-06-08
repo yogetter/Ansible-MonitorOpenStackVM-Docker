@@ -1,0 +1,12 @@
+---
+influxdb_ip: 172.22.131.23
+influxdb_port: 8086
+influxdb_user: 
+influxdb_passwd:
+rabbitmq_ip:
+rabbitmq_user:
+rabbitmq_password:
+openstack_interal_url: 
+openstack_admin_password:
+openstack_admin_domain: Default
+openstack_admin_project: admin

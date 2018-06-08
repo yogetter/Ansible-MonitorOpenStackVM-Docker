@@ -1,0 +1,71 @@
+---
+- name: (Ubuntu) Install prerequisites 
+  apt: name={{item}} update_cache=yes
+  with_items:
+   - apt-transport-https
+   - ca-certificates
+   - curl
+   - software-properties-common
+  become: yes
+
+- name: (Ubuntu) Add Docker GPG key
+  apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+  become: yes
+
+- name: (Ubuntu) Add Docker APT repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+  become: yes
+
+- name: (Ubuntu) Install Docker
+  apt: name=docker-ce
+  become: yes
+
+#- name: chekc if hadoop dircetory exits
+#  stat:
+#    path: /opt/hadoop-{{ hadoop_version }}
+#  register: hadoop_dir_result
+#
+#- name: chekc if hadoop tgz exits
+#  stat:
+#    path: /opt/hadoop-{{ hadoop_version }}.tgz
+#  register: hadoop_tgz_result
+#
+#- name: install java jdk8
+#  apt:
+#    name: openjdk-8-jdk
+#
+#- name: chekc java environment
+#  shell: grep 'export JAVA_HOME' /root/.bashrc  | cat
+#  register: java_set
+#
+#- name: set java environment
+#  shell: sed -i '1i export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/' /root/.bashrc
+#  when: java_set.stdout == ""
+#
+#- name: Get hadoop tar
+#  get_url:
+#    url: http://apache.stu.edu.tw/hadoop/common/stable/hadoop-{{ hadoop_version }}.tar.gz
+#    dest: /tmp/
+#  when: hadoop_result.stat.exists == False
+#
+#- name: unarchive hadoop dircetory
+#  unarchive: 
+#    src: /tmp/hadoop-{{ hadoop_version }}.tar.gz
+#    dest: /opt/
+#  when: hadoop_dir_result.stat.exists == False
+#
+#- name: Create slaves
+#  template: src=slaves.j2 dest=/opt/hadoop-{{ hadoop_version }}/etc/hadoop/slaves 
+#
+#- name: Create core-site.xml
+#  template: src=core-site.xml.j2 dest=/opt/hadoop-{{ hadoop_version }}/etc/hadoop/core-site.xml
+#
+#- name: Create hdfs-site.xml
+#  template: src=hdfs-site.xml.j2 dest=/opt/hadoop-{{ hadoop_version }}/etc/hadoop/hdfs-site.xml
+#
+#- name: Create tar
+#  archive:
+#    path: /opt/hadoop-{{ hadoop_version }}
+#    dest: /opt/hadoop-{{ hadoop_version }}.tgz
+#  when: hadoop_tgz_result.stat.exists == False
