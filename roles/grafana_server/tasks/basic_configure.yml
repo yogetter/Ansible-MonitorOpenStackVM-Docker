@@ -8,8 +8,10 @@
   become: yes
 
 - name: Create AddDataSource script
-  template: src=AddDataSoure.sh dest=/tmp/AddDataSoure.sh
-  mode: 0755
+  template: 
+   src: AddDataSoure.sh 
+   dest: /tmp/AddDataSoure.sh
+   mode: 0755
 
 - name: Run AddDataSource script
   shell: /tmp/AddDataSoure.sh

@@ -1,31 +1,22 @@
 ---
-- name: (Ubuntu) Install prerequisites 
-  apt: name={{item}} update_cache=yes
+- name: Create json file
+  template: src=../templates/json/{{item}} dest=/opt/json/{{item}}
   with_items:
-   - apt-transport-https
-   - ca-certificates
-   - curl
-   - software-properties-common
-   - python-pip
+  - db_conf.json
+  - openstack_conf.json
+  - rabbitmq.json
+  - user_info.json
   become: yes
 
-- name: (Ubuntu) Add Docker GPG key
-  apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+- name: Run client container
+  docker_container:
+    name: client
+    image: getter/monitor-client:pike
+    volumes:
+    - /opt/json:/opt/go/src/MonitorOpenStackVM/json
+    - /var/run/libvirt/:/var/run/libvirt/
   become: yes
 
-- name: (Ubuntu) Add Docker APT repository
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
-  become: yes
-
-- name: (Ubuntu) Install Docker
-  apt: name=docker-ce
-  become: yes
-
-- name: Install dcoker-py
-  pip: 
-   name: docker
-  become: yes
 
 #- name: chekc if hadoop dircetory exits
 #  stat:

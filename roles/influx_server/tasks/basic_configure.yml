@@ -1,7 +1,26 @@
 ---
-- name: Run Grafana Container
-  shell: docker run -d --name=influx -p 8086:8086 influxdb 
+- name: Run influxdb Container
+  docker_container:
+    name: influx
+    image: influxdb
+    ports:
+    - "8086:8086"
   become: yes
+
+- name: Create AddDataBase script
+  template: 
+   src: AddDataBase.sh 
+   dest: /tmp/AddDataBase.sh
+   mode: 0755
+
+- name: Run AddDataBase script
+  shell: /tmp/AddDataBase.sh
+  register: add_result
+  until: add_result.rc == 0
+  retries: 10
+  delay: 5
+  ignore_errors: yes
+
 
 #- name: chekc if hadoop tar exits
 #  stat:

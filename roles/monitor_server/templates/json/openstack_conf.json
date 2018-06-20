@@ -1,0 +1,3 @@
+{
+    "OS_AUTH_URL": "http://{{ openstack_interal_ip }}"
+}

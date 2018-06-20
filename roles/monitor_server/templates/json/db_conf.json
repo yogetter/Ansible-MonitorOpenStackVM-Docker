@@ -1,0 +1,6 @@
+{
+    "Url": "http://{% for host in groups['influxdb'] %}{{ host }}{% endfor %}:{{ influxdb_port }}",
+    "Db": "telegraf",
+    "Username": "{{ influxdb_user }}",
+    "Password": "{{ influxdb_passwd }}"
+}

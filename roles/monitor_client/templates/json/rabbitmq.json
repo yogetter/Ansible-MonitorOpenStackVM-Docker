@@ -1,0 +1,6 @@
+{
+    "Url": "{{ rabbitmq_url }}/{{ rabbitmq_vhost  }}",
+    "Username": "{{ rabbitmq_user }}",
+    "Password": "{{ rabbitmq_password }}"
+
+}
