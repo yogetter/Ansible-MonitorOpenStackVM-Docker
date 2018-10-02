@@ -1,0 +1,5 @@
+#!/bin/bash
+database_name=$(cat group_vars/all.yml | grep influxdb_name | awk '{print $2}')
+cp ./grafana/grafana_dashboard.json.example ./grafana/grafana_dashboard.json
+sed -i s/\$name/$database_name/g ./grafana/grafana_dashboard.json
+echo "Generate grafana dashboard at ./grafana/grafana_dashboard.json done"
